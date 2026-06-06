@@ -5,38 +5,45 @@ const telefonoInput = document.querySelector("#telefono");
 const messaggioInput = document.querySelector("#messaggio");
 const formMessage = document.querySelector("#formMessage");
 
-contactForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+if (contactForm) {
+    contactForm.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-    const nome = nomeInput.value.trim();
-    const email = emailInput.value.trim();
-    const telefono = telefonoInput.value.trim();
-    const messaggio = messaggioInput.value.trim();
+        const nome = nomeInput.value.trim();
+        const email = emailInput.value.trim();
+        const telefono = telefonoInput.value.trim();
+        const messaggio = messaggioInput.value.trim();
 
-    if (nome === "" || messaggio === "") {
-        showMessage("Inserisci almeno nome e messaggio.", "error");
-        return;
-    }
+        if (nome.length < 2) {
+            showMessage("Inserisci un nome valido.", "error");
+            return;
+        }
 
-    if (email === "" && telefono === "") {
-        showMessage("Inserisci almeno un contatto: email o numero di telefono.", "error");
-        return;
-    }
+        if (messaggio.length < 10) {
+            showMessage("Scrivi un messaggio un po' più dettagliato.", "error");
+            return;
+        }
 
-    if (email !== "" && !isValidEmail(email)) {
-        showMessage("Inserisci un indirizzo email valido.", "error");
-        return;
-    }
+        if (email === "" && telefono === "") {
+            showMessage("Inserisci almeno un contatto: email o numero di telefono.", "error");
+            return;
+        }
 
-    if (telefono !== "" && !isValidPhone(telefono)) {
-        showMessage("Inserisci un numero di telefono valido.", "error");
-        return;
-    }
+        if (email !== "" && !isValidEmail(email)) {
+            showMessage("Inserisci un indirizzo email valido.", "error");
+            return;
+        }
 
-    showMessage("Richiesta inviata correttamente! Ti ricontatterò presto.", "success");
+        if (telefono !== "" && !isValidPhone(telefono)) {
+            showMessage("Inserisci un numero di telefono valido.", "error");
+            return;
+        }
 
-    contactForm.reset();
-});
+        showMessage("Richiesta inviata correttamente! Ti ricontatterò presto.", "success");
+
+        contactForm.reset();
+    });
+}
 
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,7 +51,7 @@ function isValidEmail(email) {
 }
 
 function isValidPhone(phone) {
-    const cleanPhone = phone.replace(/\s/g, "");
+    const cleanPhone = phone.replace(/[\s\-().]/g, "");
     const phoneRegex = /^\+?[0-9]{8,15}$/;
     return phoneRegex.test(cleanPhone);
 }
@@ -52,9 +59,6 @@ function isValidPhone(phone) {
 function showMessage(text, type) {
     formMessage.textContent = text;
 
-    if (type === "error") {
-        formMessage.className = "form-message error";
-    } else {
-        formMessage.className = "form-message success";
-    }
+    formMessage.classList.remove("error", "success");
+    formMessage.classList.add(type);
 }

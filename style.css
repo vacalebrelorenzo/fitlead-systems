@@ -427,6 +427,229 @@ a {
 
 
 /* =========================
+   SEZIONE PERCHÉ TI SERVE
+========================= */
+
+.why-section {
+  padding: 110px 10%;
+  background: var(--light-bg);
+  color: var(--text-dark);
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.why-card {
+  padding: 34px;
+  border-radius: 26px;
+  background: var(--white);
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--shadow-light);
+  transition: 0.25s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.13);
+}
+
+.why-card h3 {
+  font-size: 24px;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  color: var(--text-dark);
+}
+
+.why-card p {
+  color: var(--text-gray);
+  line-height: 1.75;
+}
+
+
+/* =========================
+   SEZIONE PACCHETTO
+========================= */
+
+.package-section {
+  padding: 120px 10%;
+  background:
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 35%),
+    linear-gradient(135deg, #07111f 0%, #0f1f46 100%);
+  color: var(--white);
+}
+
+.package-content {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.package-text {
+  max-width: 780px;
+  margin-bottom: 55px;
+}
+
+.package-text h2 {
+  font-size: clamp(34px, 4vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -1.6px;
+  margin-bottom: 22px;
+}
+
+.package-text p {
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.package-grid article {
+  padding: 30px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: 0.25s ease;
+}
+
+.package-grid article:hover {
+  transform: translateY(-8px);
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.package-grid span {
+  display: inline-flex;
+  margin-bottom: 18px;
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.package-grid h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.package-grid p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+
+/* =========================
+   SEZIONE PREZZO
+========================= */
+
+.pricing-section {
+  padding: 120px 10%;
+  background: var(--light-bg);
+  color: var(--text-dark);
+}
+
+.pricing-card {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 46px;
+  border-radius: 32px;
+  background: var(--white);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.14);
+  text-align: center;
+}
+
+.pricing-card h2 {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 18px;
+  color: var(--text-dark);
+}
+
+.pricing-description {
+  max-width: 620px;
+  margin: 0 auto 32px;
+  color: var(--text-gray);
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.price {
+  margin: 34px 0;
+  padding: 28px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 40%),
+    #f1f5f9;
+  border: 1px solid #dbeafe;
+}
+
+.price span {
+  display: block;
+  font-size: clamp(54px, 8vw, 84px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 1;
+  color: #0284c7;
+}
+
+.price small {
+  display: block;
+  margin-top: 10px;
+  color: var(--text-gray);
+  font-weight: 700;
+}
+
+.pricing-list {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin: 0 auto 34px;
+  max-width: 520px;
+  text-align: left;
+}
+
+.pricing-list li {
+  color: var(--text-gray);
+  font-weight: 700;
+}
+
+.pricing-list li::before {
+  content: "✓";
+  color: var(--primary-hover);
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.not-included {
+  margin-bottom: 34px;
+  padding: 22px;
+  border-radius: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.not-included h3 {
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.not-included p {
+  color: var(--text-gray);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================
    SEZIONE SERVIZI
 ========================= */
 
@@ -574,6 +797,21 @@ button:hover {
   box-shadow: 0 22px 55px rgba(56, 189, 248, 0.42);
 }
 
+.form-message {
+  min-height: 24px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.form-message.error {
+  color: #f87171;
+}
+
+.form-message.success {
+  color: #4ade80;
+}
+
 
 /* =========================
    FOOTER
@@ -627,18 +865,29 @@ footer p {
 
   .problem-section,
   .solution-section,
+  .why-section,
+  .package-section,
+  .pricing-section,
   #servizi,
   #contatti {
     padding: 90px 6%;
   }
 
   .problem-grid,
+  .why-grid,
+  .package-grid,
   #servizi {
     grid-template-columns: 1fr;
   }
 
   .solution-content {
     grid-template-columns: 1fr;
+  }
+
+  .package-text {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -709,13 +958,19 @@ footer p {
 
   .problem-section,
   .solution-section,
+  .why-section,
+  .package-section,
+  .pricing-section,
   #servizi,
   #contatti {
     padding: 75px 22px;
   }
 
   .problem-card,
+  .why-card,
   .solution-box,
+  .package-grid article,
+  .pricing-card,
   #servizi article {
     padding: 26px;
   }
@@ -724,47 +979,19 @@ footer p {
     padding: 18px;
   }
 
+  .pricing-card {
+    border-radius: 26px;
+  }
+
+  .price {
+    padding: 24px 18px;
+  }
+
+  .price span {
+    letter-spacing: -2px;
+  }
+
   form {
     padding: 24px;
   }
 }
-
-.form-message {
-  min-height: 24px;
-  margin-bottom: 18px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.form-message.error {
-  color: #f87171;
-}
-
-.form-message.success {
-  color: #4ade80;
-}
-
-/*.contact-actions {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 34px;
-}
-
-.whatsapp-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 24px;
-  border-radius: 14px;
-  background: #22c55e;
-  color: #052e16;
-  font-weight: 900;
-  text-decoration: none;
-  box-shadow: 0 16px 40px rgba(34, 197, 94, 0.28);
-  transition: 0.25s ease;
-}
-
-.whatsapp-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 22px 55px rgba(34, 197, 94, 0.4);
-} */
