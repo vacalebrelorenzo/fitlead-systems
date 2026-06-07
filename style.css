@@ -10,6 +10,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -26,6 +27,10 @@ img {
 
 a {
   color: inherit;
+}
+
+section {
+  scroll-margin-top: 96px;
 }
 
 
@@ -129,8 +134,9 @@ a {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(2, 6, 23, 0.82);
+  background: rgba(2, 6, 23, 0.84);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -139,12 +145,13 @@ a {
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--white);
+  white-space: nowrap;
 }
 
 .site-header nav {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -154,10 +161,24 @@ a {
   font-weight: 700;
   color: var(--text-muted);
   transition: 0.25s ease;
+  padding: 9px 12px;
+  border-radius: 999px;
 }
 
 .site-header nav a:hover {
   color: var(--primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.site-header nav a.active {
+  color: #020617;
+  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 60%, #2563eb 100%);
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
+}
+
+.site-header nav a.btn-secondary.active {
+  color: #020617;
+  border-color: transparent;
 }
 
 
@@ -198,7 +219,7 @@ a {
 }
 
 .hero h1 {
-  font-size: clamp(42px, 6vw, 72px);
+  font-size: clamp(40px, 6vw, 72px);
   line-height: 0.98;
   letter-spacing: -2.5px;
   margin-bottom: 26px;
@@ -206,7 +227,7 @@ a {
 }
 
 .subtitle {
-  font-size: 20px;
+  font-size: clamp(17px, 2vw, 20px);
   line-height: 1.75;
   color: var(--text-muted);
   margin-bottom: 28px;
@@ -293,7 +314,7 @@ a {
 }
 
 .section-header h2 {
-  font-size: clamp(34px, 4vw, 54px);
+  font-size: clamp(32px, 4vw, 54px);
   line-height: 1.1;
   letter-spacing: -1.6px;
   margin-bottom: 22px;
@@ -301,7 +322,7 @@ a {
 
 .section-header p {
   color: var(--text-gray);
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   line-height: 1.75;
 }
 
@@ -366,7 +387,7 @@ a {
 }
 
 .solution-text h2 {
-  font-size: clamp(34px, 4vw, 56px);
+  font-size: clamp(32px, 4vw, 56px);
   line-height: 1.08;
   letter-spacing: -1.6px;
   margin-bottom: 24px;
@@ -512,7 +533,7 @@ a {
 }
 
 .package-text h2 {
-  font-size: clamp(34px, 4vw, 56px);
+  font-size: clamp(32px, 4vw, 56px);
   line-height: 1.08;
   letter-spacing: -1.6px;
   margin-bottom: 22px;
@@ -585,7 +606,7 @@ a {
 }
 
 .pricing-card h2 {
-  font-size: clamp(34px, 4vw, 52px);
+  font-size: clamp(32px, 4vw, 52px);
   line-height: 1.1;
   letter-spacing: -1.5px;
   margin-bottom: 18px;
@@ -684,7 +705,7 @@ a {
 #servizi h2 {
   grid-column: 1 / -1;
   text-align: center;
-  font-size: clamp(34px, 4vw, 52px);
+  font-size: clamp(32px, 4vw, 52px);
   line-height: 1.1;
   letter-spacing: -1.6px;
   margin-bottom: 28px;
@@ -735,7 +756,7 @@ a {
 }
 
 #contatti h2 {
-  font-size: clamp(34px, 4vw, 54px);
+  font-size: clamp(32px, 4vw, 54px);
   line-height: 1.1;
   letter-spacing: -1.5px;
   margin-bottom: 18px;
@@ -793,6 +814,16 @@ textarea:focus {
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
 }
 
+input.valid,
+textarea.valid {
+  border-color: rgba(34, 197, 94, 0.75);
+}
+
+input.invalid,
+textarea.invalid {
+  border-color: rgba(248, 113, 113, 0.85);
+}
+
 textarea {
   min-height: 140px;
   resize: vertical;
@@ -815,6 +846,13 @@ button {
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 24px 65px rgba(56, 189, 248, 0.45);
+}
+
+.form-hint {
+  margin-top: -12px;
+  margin-bottom: 18px;
+  color: var(--text-soft);
+  font-size: 13px;
 }
 
 .form-message {
@@ -855,8 +893,21 @@ footer p {
 ========================= */
 
 @media (max-width: 1000px) {
+  html {
+    scroll-padding-top: 142px;
+  }
+
+  section {
+    scroll-margin-top: 142px;
+  }
+
   .site-header {
     padding: 18px 6%;
+    align-items: flex-start;
+  }
+
+  .site-header nav {
+    justify-content: flex-end;
   }
 
   .hero {
@@ -917,30 +968,55 @@ footer p {
 ========================= */
 
 @media (max-width: 600px) {
+  html {
+    scroll-padding-top: 128px;
+  }
+
+  section {
+    scroll-margin-top: 128px;
+  }
+
   .site-header {
+    min-height: auto;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    padding: 18px 22px;
+    gap: 14px;
+    padding: 16px 18px;
+  }
+
+  .logo {
+    font-size: 20px;
   }
 
   .site-header nav {
     width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     justify-content: flex-start;
     gap: 10px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .site-header nav::-webkit-scrollbar {
+    display: none;
   }
 
   .site-header nav a {
+    flex: 0 0 auto;
     font-size: 14px;
+    padding: 9px 13px;
+    white-space: nowrap;
   }
 
   .site-header .btn-secondary {
-    padding: 10px 14px;
+    padding: 9px 13px;
   }
 
   .hero {
     min-height: auto;
-    padding: 70px 22px;
+    padding: 62px 20px 72px;
   }
 
   .eyebrow,
@@ -950,7 +1026,7 @@ footer p {
   }
 
   .hero h1 {
-    font-size: 42px;
+    font-size: clamp(38px, 11vw, 46px);
     letter-spacing: -1.6px;
   }
 
@@ -983,7 +1059,20 @@ footer p {
   .pricing-section,
   #servizi,
   #contatti {
-    padding: 75px 22px;
+    padding: 72px 20px;
+  }
+
+  .section-header {
+    margin-bottom: 42px;
+  }
+
+  .section-header h2,
+  .solution-text h2,
+  .package-text h2,
+  .pricing-card h2,
+  #servizi h2,
+  #contatti h2 {
+    letter-spacing: -1.1px;
   }
 
   .problem-card,
@@ -992,7 +1081,7 @@ footer p {
   .package-grid article,
   .pricing-card,
   #servizi article {
-    padding: 26px;
+    padding: 24px;
   }
 
   .solution-list div {
@@ -1013,5 +1102,11 @@ footer p {
 
   form {
     padding: 24px;
+  }
+
+  input,
+  textarea,
+  button {
+    font-size: 16px;
   }
 }
