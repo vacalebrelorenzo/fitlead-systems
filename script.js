@@ -137,7 +137,7 @@ if (contactForm) {
 
         if (telefono !== "" && !isValidPhone(telefono)) {
             setInvalid(telefonoInput);
-            showMessage("Inserisci un numero di telefono valido.", "error");
+            showMessage("Inserisci un numero di cellulare italiano valido.", "error");
             return;
         }
 
@@ -191,7 +191,9 @@ if (emailInput) {
 
 if (telefonoInput) {
     telefonoInput.addEventListener("input", function() {
-        telefonoInput.value = telefonoInput.value.replace(/[^\d+\s().-]/g, "");
+        telefonoInput.value = telefonoInput.value
+            .replace(/[^\d+\s().-]/g, "")
+            .replace(/(?!^)\+/g, "");
 
         const telefono = telefonoInput.value.trim();
 
@@ -220,13 +222,12 @@ function isValidEmail(email) {
 
 function isValidPhone(phone) {
     const cleanPhone = phone.replace(/[\s\-().]/g, "");
-    const phoneRegex = /^\+?[0-9]{8,15}$/;
-    return phoneRegex.test(cleanPhone);
+    const italianMobileRegex = /^(?:\+39|0039)?3\d{9}$/;
+    return italianMobileRegex.test(cleanPhone);
 }
 
 function showMessage(text, type) {
     formMessage.textContent = text;
-
     formMessage.classList.remove("error", "success");
     formMessage.classList.add(type);
 }
