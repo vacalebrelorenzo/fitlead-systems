@@ -1,8 +1,10 @@
 /* =========================
-   RESET BASE
+   RESET BASE & GLOBAL SETTINGS
 ========================= */
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -14,23 +16,55 @@ html {
 }
 
 body {
+  min-height: 100vh;
+  overflow-x: hidden;
   font-family: Inter, Arial, Helvetica, sans-serif;
   background: var(--bg-deep);
-  color: #f8fafc;
+  color: var(--text-light);
   line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-img {
+img,
+picture,
+video,
+canvas,
+svg {
   max-width: 100%;
   display: block;
 }
 
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+input,
+textarea,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 section {
   scroll-margin-top: 96px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.55);
+  outline-offset: 4px;
 }
 
 
@@ -966,6 +1000,101 @@ footer p {
   }
 }
 
+/* =========================
+   DISPOSITIVI TOUCH
+========================= */
+
+@media (hover: none) {
+  .btn-primary:hover,
+  button:hover,
+  .problem-card:hover,
+  .why-card:hover,
+  .package-grid article:hover,
+  #servizi article:hover {
+    transform: none;
+  }
+
+  .solution-list div:hover {
+    transform: none;
+  }
+}
+
+
+/* =========================
+   RESPONSIVE TABLET
+========================= */
+
+@media (max-width: 1000px) {
+  html {
+    scroll-padding-top: 142px;
+  }
+
+  section {
+    scroll-margin-top: 142px;
+  }
+
+  .site-header {
+    padding: 18px 6%;
+    align-items: flex-start;
+  }
+
+  .site-header nav {
+    justify-content: flex-end;
+  }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 6%;
+    gap: 55px;
+  }
+
+  .hero-text {
+    max-width: 760px;
+  }
+
+  .subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .trust {
+    justify-content: center;
+  }
+
+  .hero-image {
+    max-width: 620px;
+  }
+
+  .problem-section,
+  .solution-section,
+  .why-section,
+  .package-section,
+  .pricing-section,
+  #servizi,
+  #contatti {
+    padding: 90px 6%;
+  }
+
+  .problem-grid,
+  .why-grid,
+  .package-grid,
+  #servizi {
+    grid-template-columns: 1fr;
+  }
+
+  .solution-content {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .package-text {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 /* =========================
    RESPONSIVE MOBILE
@@ -973,11 +1102,11 @@ footer p {
 
 @media (max-width: 600px) {
   html {
-    scroll-padding-top: 128px;
+    scroll-padding-top: 126px;
   }
 
   section {
-    scroll-margin-top: 128px;
+    scroll-margin-top: 126px;
   }
 
   .site-header {
@@ -985,7 +1114,7 @@ footer p {
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-    padding: 16px 18px;
+    padding: 16px 18px 14px;
   }
 
   .logo {
@@ -1009,6 +1138,9 @@ footer p {
 
   .site-header nav a {
     flex: 0 0 auto;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
     font-size: 14px;
     padding: 9px 13px;
     white-space: nowrap;
@@ -1020,7 +1152,8 @@ footer p {
 
   .hero {
     min-height: auto;
-    padding: 62px 20px 72px;
+    padding: 58px 20px 72px;
+    gap: 42px;
   }
 
   .eyebrow,
@@ -1030,25 +1163,42 @@ footer p {
   }
 
   .hero h1 {
-    font-size: clamp(38px, 11vw, 46px);
-    letter-spacing: -1.6px;
+    font-size: clamp(36px, 10.5vw, 46px);
+    line-height: 1.02;
+    letter-spacing: -1.5px;
+    margin-bottom: 22px;
   }
 
   .subtitle {
     font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 24px;
   }
 
-  .btn-primary {
+  .btn-primary,
+  button {
     width: 100%;
+    min-height: 52px;
   }
 
   .trust {
     flex-direction: column;
     align-items: stretch;
+    margin-bottom: 28px;
   }
 
   .trust span {
     justify-content: center;
+  }
+
+  .hero-image {
+    max-width: 100%;
+  }
+
+  .hero-image::before {
+    inset: -12px;
+    border-radius: 26px;
+    filter: blur(6px);
   }
 
   .hero-image img {
@@ -1076,7 +1226,18 @@ footer p {
   .pricing-card h2,
   #servizi h2,
   #contatti h2 {
+    font-size: clamp(30px, 8.8vw, 38px);
+    line-height: 1.12;
     letter-spacing: -1.1px;
+  }
+
+  .section-header p,
+  .solution-text > p,
+  .package-text p,
+  .pricing-description,
+  #contatti > p {
+    font-size: 16px;
+    line-height: 1.7;
   }
 
   .problem-card,
@@ -1086,10 +1247,29 @@ footer p {
   .pricing-card,
   #servizi article {
     padding: 24px;
+    border-radius: 22px;
+  }
+
+  .problem-card h3,
+  .why-card h3,
+  #servizi article h3 {
+    font-size: 21px;
   }
 
   .solution-list div {
     padding: 18px;
+  }
+
+  .solution-box h3 {
+    font-size: 25px;
+  }
+
+  .package-text {
+    margin-bottom: 42px;
+  }
+
+  .package-grid {
+    gap: 18px;
   }
 
   .pricing-card {
@@ -1098,19 +1278,90 @@ footer p {
 
   .price {
     padding: 24px 18px;
+    margin: 28px 0;
   }
 
   .price span {
+    font-size: clamp(50px, 18vw, 70px);
     letter-spacing: -2px;
+  }
+
+  .pricing-list {
+    gap: 12px;
+  }
+
+  .not-included {
+    padding: 18px;
   }
 
   form {
     padding: 24px;
+    border-radius: 24px;
+  }
+
+  label {
+    font-size: 14px;
   }
 
   input,
-  textarea,
-  button {
+  textarea {
     font-size: 16px;
+    padding: 15px 15px;
+    border-radius: 13px;
+  }
+
+  textarea {
+    min-height: 130px;
+  }
+
+  .form-message {
+    font-size: 14px;
+  }
+
+  footer {
+    padding: 24px 20px;
+  }
+}
+
+
+/* =========================
+   MOBILE PICCOLO
+========================= */
+
+@media (max-width: 380px) {
+  .site-header {
+    padding: 14px 16px 12px;
+  }
+
+  .hero {
+    padding: 52px 18px 64px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .problem-section,
+  .solution-section,
+  .why-section,
+  .package-section,
+  .pricing-section,
+  #servizi,
+  #contatti {
+    padding: 64px 18px;
+  }
+
+  .problem-card,
+  .why-card,
+  .solution-box,
+  .package-grid article,
+  .pricing-card,
+  #servizi article,
+  form {
+    padding: 20px;
+  }
+
+  .price span {
+    font-size: 48px;
   }
 }
