@@ -82,11 +82,6 @@ function updateActiveMenu(sectionId) {
     });
 }
 
-
-/* =========================
-   CLICK MENU CON STATO ATTIVO IMMEDIATO
-========================= */
-
 navLinks.forEach(function(link) {
     link.addEventListener("click", function() {
         const sectionId = link.getAttribute("href").replace("#", "");
@@ -96,17 +91,18 @@ navLinks.forEach(function(link) {
 
 
 /* =========================
-   VALIDAZIONE FORM
+   VALIDAZIONE + INVIO NETLIFY FORMS
 ========================= */
 
 if (contactForm) {
-    contactForm.addEventListener("submit", function(event) {
+    contactForm.addEventListener("submit", async function(event) {
         event.preventDefault();
 
         const nome = nomeInput.value.trim();
         const email = emailInput.value.trim();
         const telefono = telefonoInput.value.trim();
         const messaggio = messaggioInput.value.trim();
+        const submitButton = contactForm.querySelector("button[type='submit']");
 
         clearInputStates();
 
@@ -152,13 +148,38 @@ if (contactForm) {
             setValid(telefonoInput);
         }
 
-        showMessage("Richiesta inviata correttamente! Ti ricontatterò presto.", "success");
+        try {
+            submitButton.disabled = true;
+            submitButton.textContent = "Invio in corso...";
 
-        contactForm.reset();
+            const formData = new FormData(contactForm);
 
-        setTimeout(function() {
-            clearInputStates();
-        }, 1200);
+            const response = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams(formData).toString()
+            });
+
+            if (!response.ok) {
+                throw new Error("Errore durante l'invio del form.");
+            }
+
+            showMessage("Richiesta inviata correttamente! Ti ricontatterò presto.", "success");
+
+            contactForm.reset();
+
+            setTimeout(function() {
+                clearInputStates();
+            }, 1200);
+
+        } catch (error) {
+            showMessage("C'è stato un problema durante l'invio. Riprova tra poco.", "error");
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Invia richiesta";
+        }
     });
 }
 
@@ -223,11 +244,13 @@ function isValidEmail(email) {
 function isValidPhone(phone) {
     const cleanPhone = phone.replace(/[\s\-().]/g, "");
     const italianMobileRegex = /^(?:\+39|0039)?3\d{9}$/;
+
     return italianMobileRegex.test(cleanPhone);
 }
 
 function showMessage(text, type) {
     formMessage.textContent = text;
+
     formMessage.classList.remove("error", "success");
     formMessage.classList.add(type);
 }
