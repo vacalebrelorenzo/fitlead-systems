@@ -17,32 +17,34 @@ let isScrolling = false;
 let isMenuClickScrolling = false;
 let menuClickTimeout;
 
-window.addEventListener("scroll", function() {
-    if (isMenuClickScrolling) {
-        return;
-    }
+if (navLinks.length > 0) {
+    window.addEventListener("scroll", function() {
+        if (isMenuClickScrolling) {
+            return;
+        }
 
-    if (!isScrolling) {
-        window.requestAnimationFrame(function() {
-            updateActiveMenuOnScroll();
-            isScrolling = false;
-        });
+        if (!isScrolling) {
+            window.requestAnimationFrame(function() {
+                updateActiveMenuOnScroll();
+                isScrolling = false;
+            });
 
-        isScrolling = true;
-    }
-});
+            isScrolling = true;
+        }
+    });
 
-window.addEventListener("load", updateActiveMenuOnScroll);
-window.addEventListener("resize", updateActiveMenuOnScroll);
+    window.addEventListener("load", updateActiveMenuOnScroll);
+    window.addEventListener("resize", updateActiveMenuOnScroll);
+}
 
 function updateActiveMenuOnScroll() {
-    const headerHeight = header ? header.offsetHeight : 0;
+    const headerHeight = getHeaderHeight();
     const scrollPosition = window.scrollY + headerHeight + 120;
 
     let currentSectionId = "";
 
     navLinks.forEach(function(link) {
-        const sectionId = link.getAttribute("href").replace("#", "");
+        const sectionId = getSectionIdFromLink(link);
         const section = document.getElementById(sectionId);
 
         if (!section) {
@@ -54,28 +56,29 @@ function updateActiveMenuOnScroll() {
         }
     });
 
-    const pageBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 5;
+    const pageBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5;
 
-    if (pageBottom) {
+    if (pageBottom && navLinks.length > 0) {
         const lastLink = navLinks[navLinks.length - 1];
-
-        if (lastLink) {
-            currentSectionId = lastLink.getAttribute("href").replace("#", "");
-        }
+        currentSectionId = getSectionIdFromLink(lastLink);
     }
 
     updateActiveMenu(currentSectionId);
 }
 
 function updateActiveMenu(sectionId) {
+    if (!sectionId) {
+        return;
+    }
+
     navLinks.forEach(function(link) {
-        const linkTarget = link.getAttribute("href").replace("#", "");
+        const linkTarget = getSectionIdFromLink(link);
 
         if (linkTarget === sectionId) {
             link.classList.add("active");
-            link.setAttribute("aria-current", "true");
+            link.setAttribute("aria-current", "page");
 
-            if (window.innerWidth <= 600) {
+            if (window.innerWidth <= 700) {
                 link.scrollIntoView({
                     behavior: "smooth",
                     inline: "center",
@@ -89,6 +92,14 @@ function updateActiveMenu(sectionId) {
     });
 }
 
+function getSectionIdFromLink(link) {
+    return link.getAttribute("href").replace("#", "");
+}
+
+function getHeaderHeight() {
+    return header ? header.offsetHeight : 0;
+}
+
 
 /* =========================
    CLICK MENU CON STATO ATTIVO IMMEDIATO
@@ -98,15 +109,15 @@ navLinks.forEach(function(link) {
     link.addEventListener("click", function(event) {
         event.preventDefault();
 
-        const sectionId = link.getAttribute("href").replace("#", "");
+        const sectionId = getSectionIdFromLink(link);
         const section = document.getElementById(sectionId);
 
         if (!section) {
             return;
         }
 
-        const headerHeight = header ? header.offsetHeight : 0;
-        const sectionPosition = section.offsetTop - headerHeight + 2;
+        const headerHeight = getHeaderHeight();
+        const sectionPosition = section.getBoundingClientRect().top + window.scrollY - headerHeight + 2;
 
         isMenuClickScrolling = true;
 
@@ -121,8 +132,8 @@ navLinks.forEach(function(link) {
 
         menuClickTimeout = setTimeout(function() {
             isMenuClickScrolling = false;
-            updateActiveMenu(sectionId);
-        }, 700);
+            updateActiveMenuOnScroll();
+        }, 850);
     });
 });
 
@@ -132,45 +143,33 @@ navLinks.forEach(function(link) {
 ========================= */
 
 if (contactForm) {
+    contactForm.setAttribute("novalidate", "true");
+
     contactForm.addEventListener("submit", async function(event) {
         event.preventDefault();
 
-        const nome = nomeInput.value.trim();
-        const email = emailInput.value.trim();
-        const telefono = telefonoInput.value.trim();
-        const messaggio = messaggioInput.value.trim();
         const submitButton = contactForm.querySelector("button[type='submit']");
+        const originalButtonText = submitButton ? submitButton.textContent : "";
 
         clearInputStates();
+        clearMessage();
 
-        if (nome.length < 2) {
-            setInvalid(nomeInput);
-            showMessage("Inserisci un nome valido.", "error");
-            return;
-        }
+        const nome = getInputValue(nomeInput);
+        const email = getInputValue(emailInput);
+        const telefono = getInputValue(telefonoInput);
+        const messaggio = getInputValue(messaggioInput);
 
-        if (messaggio.length < 10) {
-            setInvalid(messaggioInput);
-            showMessage("Scrivi un messaggio un po' più dettagliato.", "error");
-            return;
-        }
+        const validationError = validateForm(nome, email, telefono, messaggio);
 
-        if (email === "" && telefono === "") {
-            setInvalid(emailInput);
-            setInvalid(telefonoInput);
-            showMessage("Inserisci almeno un contatto: email o numero di telefono.", "error");
-            return;
-        }
+        if (validationError) {
+            showMessage(validationError.message, "error");
+            setInvalid(validationError.input);
 
-        if (email !== "" && !isValidEmail(email)) {
-            setInvalid(emailInput);
-            showMessage("Inserisci un indirizzo email valido.", "error");
-            return;
-        }
+            if (validationError.secondInput) {
+                setInvalid(validationError.secondInput);
+            }
 
-        if (telefono !== "" && !isValidPhone(telefono)) {
-            setInvalid(telefonoInput);
-            showMessage("Inserisci un numero di cellulare italiano valido.", "error");
+            validationError.input?.focus();
             return;
         }
 
@@ -186,8 +185,10 @@ if (contactForm) {
         }
 
         try {
-            submitButton.disabled = true;
-            submitButton.textContent = "Invio in corso...";
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Invio in corso...";
+            }
 
             const formData = new FormData(contactForm);
 
@@ -214,23 +215,59 @@ if (contactForm) {
         } catch (error) {
             showMessage("C'è stato un problema durante l'invio. Riprova tra poco.", "error");
         } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = "Invia richiesta";
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText || "Richiedi mini-analisi gratuita";
+            }
         }
     });
 }
 
 
 /* =========================
-   INTERAZIONE EMAIL
+   VALIDAZIONE LIVE INPUT
 ========================= */
+
+if (nomeInput) {
+    nomeInput.addEventListener("input", function() {
+        const nome = nomeInput.value.trim();
+
+        if (nome === "") {
+            resetInputState(nomeInput);
+            return;
+        }
+
+        if (nome.length >= 2) {
+            setValid(nomeInput);
+        } else {
+            setInvalid(nomeInput);
+        }
+    });
+}
+
+if (messaggioInput) {
+    messaggioInput.addEventListener("input", function() {
+        const messaggio = messaggioInput.value.trim();
+
+        if (messaggio === "") {
+            resetInputState(messaggioInput);
+            return;
+        }
+
+        if (messaggio.length >= 10) {
+            setValid(messaggioInput);
+        } else {
+            setInvalid(messaggioInput);
+        }
+    });
+}
 
 if (emailInput) {
     emailInput.addEventListener("input", function() {
         const email = emailInput.value.trim();
 
         if (email === "") {
-            emailInput.classList.remove("valid", "invalid");
+            resetInputState(emailInput);
             return;
         }
 
@@ -242,11 +279,6 @@ if (emailInput) {
     });
 }
 
-
-/* =========================
-   INTERAZIONE TELEFONO
-========================= */
-
 if (telefonoInput) {
     telefonoInput.addEventListener("input", function() {
         telefonoInput.value = telefonoInput.value
@@ -256,7 +288,7 @@ if (telefonoInput) {
         const telefono = telefonoInput.value.trim();
 
         if (telefono === "") {
-            telefonoInput.classList.remove("valid", "invalid");
+            resetInputState(telefonoInput);
             return;
         }
 
@@ -270,42 +302,124 @@ if (telefonoInput) {
 
 
 /* =========================
-   FUNZIONI DI SUPPORTO
+   FUNZIONI DI VALIDAZIONE
 ========================= */
 
+function validateForm(nome, email, telefono, messaggio) {
+    if (nome.length < 2) {
+        return {
+            input: nomeInput,
+            message: "Inserisci un nome valido."
+        };
+    }
+
+    if (email === "" && telefono === "") {
+        return {
+            input: emailInput,
+            secondInput: telefonoInput,
+            message: "Inserisci almeno un contatto: email o numero di telefono."
+        };
+    }
+
+    if (email !== "" && !isValidEmail(email)) {
+        return {
+            input: emailInput,
+            message: "Inserisci un indirizzo email valido."
+        };
+    }
+
+    if (telefono !== "" && !isValidPhone(telefono)) {
+        return {
+            input: telefonoInput,
+            message: "Inserisci un numero di telefono valido."
+        };
+    }
+
+    if (messaggio.length < 10) {
+        return {
+            input: messaggioInput,
+            message: "Scrivi un messaggio un po' più dettagliato."
+        };
+    }
+
+    return null;
+}
+
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     return emailRegex.test(email);
 }
 
 function isValidPhone(phone) {
     const cleanPhone = phone.replace(/[\s\-().]/g, "");
-    const italianMobileRegex = /^(?:\+39|0039)?3\d{9}$/;
 
-    return italianMobileRegex.test(cleanPhone);
+    const italianPhoneRegex = /^(?:\+39|0039)?\d{8,11}$/;
+
+    return italianPhoneRegex.test(cleanPhone);
+}
+
+
+/* =========================
+   FUNZIONI DI SUPPORTO
+========================= */
+
+function getInputValue(input) {
+    return input ? input.value.trim() : "";
 }
 
 function showMessage(text, type) {
+    if (!formMessage) {
+        return;
+    }
+
     formMessage.textContent = text;
 
     formMessage.classList.remove("error", "success");
-    formMessage.classList.add(type);
+
+    if (type) {
+        formMessage.classList.add(type);
+    }
+}
+
+function clearMessage() {
+    if (!formMessage) {
+        return;
+    }
+
+    formMessage.textContent = "";
+    formMessage.classList.remove("error", "success");
 }
 
 function setValid(input) {
+    if (!input) {
+        return;
+    }
+
     input.classList.remove("invalid");
     input.classList.add("valid");
 }
 
 function setInvalid(input) {
+    if (!input) {
+        return;
+    }
+
     input.classList.remove("valid");
     input.classList.add("invalid");
+}
+
+function resetInputState(input) {
+    if (!input) {
+        return;
+    }
+
+    input.classList.remove("valid", "invalid");
 }
 
 function clearInputStates() {
     const inputs = [nomeInput, emailInput, telefonoInput, messaggioInput];
 
     inputs.forEach(function(input) {
-        input.classList.remove("valid", "invalid");
+        resetInputState(input);
     });
 }
