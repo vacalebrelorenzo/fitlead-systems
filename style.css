@@ -74,21 +74,10 @@ select:focus-visible {
 ========================= */
 
 :root {
-  --bg-dark: #050b18;
-  --bg-blue: #0b1b3a;
   --bg-deep: #020617;
-  --bg-navy: #07111f;
 
   --primary: #38bdf8;
   --primary-hover: #0ea5e9;
-  --primary-deep: #2563eb;
-  --primary-soft: rgba(56, 189, 248, 0.14);
-
-  --accent: #8b5cf6;
-  --accent-soft: rgba(139, 92, 246, 0.16);
-
-  --warm: #f59e0b;
-  --warm-soft: rgba(245, 158, 11, 0.14);
 
   --success: #22c55e;
   --error: #f87171;
@@ -107,10 +96,8 @@ select:focus-visible {
 
   --card-dark: rgba(255, 255, 255, 0.07);
   --card-dark-hover: rgba(255, 255, 255, 0.11);
-  --card-border: rgba(255, 255, 255, 0.12);
 
   --radius-lg: 28px;
-  --radius-md: 18px;
   --radius-sm: 12px;
 
   --shadow-dark: 0 24px 80px rgba(0, 0, 0, 0.42);
@@ -364,15 +351,6 @@ select:focus-visible {
   border-radius: 34px;
   filter: blur(8px);
   opacity: 0.85;
-}
-
-.hero-image img {
-  position: relative;
-  width: 100%;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-dark);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  transform: rotate(1.5deg);
 }
 
 
@@ -729,10 +707,6 @@ select:focus-visible {
    Gestione sezioni chiare, FAQ, servizi e box dominio
 ========================= */
 
-#perche-serve {
-  background: var(--light-bg);
-}
-
 #per-chi {
   background: #ffffff;
 }
@@ -751,16 +725,6 @@ select:focus-visible {
 
 #come-funziona .why-card h3 {
   color: #0369a1;
-}
-
-#servizi {
-  background:
-    radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.08), transparent 30%),
-    linear-gradient(180deg, var(--light-bg) 0%, #ffffff 100%);
-}
-
-#servizi .section-header {
-  margin-bottom: 48px;
 }
 
 #faq {
@@ -808,136 +772,6 @@ select:focus-visible {
 /* Piccolo miglioramento visivo alla CTA della card prezzo */
 .pricing-card .btn-primary {
   margin-top: 4px;
-}
-
-
-
-
-/* =========================
-   MOCKUP REALISTICO HERO
-========================= */
-
-.demo-mockup {
-  position: relative;
-  width: 100%;
-  padding: 22px;
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 36%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.065));
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: var(--shadow-dark);
-  transform: rotate(1.5deg);
-  overflow: hidden;
-}
-
-.mockup-topbar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.mockup-topbar span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(203, 213, 225, 0.45);
-}
-
-.mockup-hero {
-  padding: 28px;
-  border-radius: 24px;
-  background:
-    linear-gradient(135deg, rgba(2, 6, 23, 0.82), rgba(11, 27, 58, 0.76));
-  border: 1px solid rgba(56, 189, 248, 0.18);
-}
-
-.mockup-label {
-  display: inline-flex;
-  margin-bottom: 12px;
-  padding: 7px 11px;
-  border-radius: 999px;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.mockup-hero h2 {
-  max-width: 360px;
-  margin-bottom: 12px;
-  font-size: clamp(28px, 3vw, 42px);
-  line-height: 1;
-  letter-spacing: -1.2px;
-  color: var(--white);
-}
-
-.mockup-hero p {
-  max-width: 440px;
-  margin-bottom: 20px;
-  color: var(--text-muted);
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.mockup-hero a {
-  display: inline-flex;
-  padding: 12px 18px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 52%, #2563eb 100%);
-  color: #020617;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.mockup-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 14px;
-}
-
-.mockup-info-grid div,
-.mockup-form {
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.075);
-  border: 1px solid rgba(255, 255, 255, 0.11);
-}
-
-.mockup-info-grid strong {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--white);
-  font-size: 14px;
-}
-
-.mockup-info-grid span {
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.mockup-form {
-  display: grid;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.mockup-form div {
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.09);
-}
-
-.mockup-form button {
-  min-height: 42px;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-size: 14px;
 }
 
 
@@ -1082,7 +916,6 @@ select:focus-visible {
 }
 
 
-
 /* =========================
    SEZIONE CONTATTI
 ========================= */
@@ -1193,13 +1026,6 @@ button {
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 24px 65px rgba(56, 189, 248, 0.42);
-}
-
-.form-hint {
-  margin-top: -12px;
-  margin-bottom: 18px;
-  color: var(--text-soft);
-  font-size: 13px;
 }
 
 .form-message {
@@ -1335,12 +1161,7 @@ footer p {
   .about-card {
     max-width: 720px;
     margin: 0 auto;
-  }
-
-  .demo-mockup {
-    transform: none;
-  }
-}
+  }}
 
 
 /* =========================
@@ -1588,21 +1409,6 @@ footer p {
   #faq .why-card h3 {
     font-size: 20px;
   }
-
-  .mockup-info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mockup-hero,
-  .mockup-info-grid div,
-  .mockup-form {
-    padding: 16px;
-  }
-
-  .mockup-hero h2 {
-    font-size: 28px;
-  }
-
   .journey-card h3 {
     font-size: 22px;
   }
@@ -1681,15 +1487,6 @@ footer p {
   }
 }
 
-.hero-image img {
-  position: relative;
-  width: 100%;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-dark);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  transform: rotate(1.5deg);
-}
-
 .journey-grid-two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   max-width: 980px;
@@ -1701,9 +1498,13 @@ footer p {
   .journey-grid-two {
     grid-template-columns: 1fr;
     max-width: 100%;
-  }
+  }}
 
   .hero-image img {
-    transform: none;
-  }
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dark);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transform: rotate(1.5deg);
 }

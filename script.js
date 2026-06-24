@@ -11,6 +11,7 @@ const navLinks = document.querySelectorAll(".site-header nav a[href^='#']");
 
 /* =========================
    MENU ATTIVO DURANTE LO SCROLL
+   Versione più stabile: non salta sezioni corte
 ========================= */
 
 let isScrolling = false;
@@ -38,32 +39,52 @@ if (navLinks.length > 0) {
 }
 
 function updateActiveMenuOnScroll() {
+    const sections = getMenuSections();
+
+    if (sections.length === 0) {
+        return;
+    }
+
     const headerHeight = getHeaderHeight();
-    const scrollPosition = window.scrollY + headerHeight + 120;
+    const activationLine = headerHeight + Math.min(window.innerHeight * 0.32, 260);
 
-    let currentSectionId = "";
+    let currentSectionId = sections[0].id;
+    let smallestDistance = Number.POSITIVE_INFINITY;
 
-    navLinks.forEach(function(link) {
-        const sectionId = getSectionIdFromLink(link);
-        const section = document.getElementById(sectionId);
+    sections.forEach(function(section) {
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const sectionBottom = rect.bottom;
 
-        if (!section) {
+        const activationLineIsInsideSection =
+            sectionTop <= activationLine && sectionBottom >= activationLine;
+
+        if (activationLineIsInsideSection) {
+            currentSectionId = section.id;
+            smallestDistance = 0;
             return;
         }
 
-        if (section.offsetTop <= scrollPosition) {
-            currentSectionId = sectionId;
+        const distance = Math.abs(sectionTop - activationLine);
+
+        if (distance < smallestDistance) {
+            smallestDistance = distance;
+            currentSectionId = section.id;
         }
     });
 
-    const pageBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5;
-
-    if (pageBottom && navLinks.length > 0) {
-        const lastLink = navLinks[navLinks.length - 1];
-        currentSectionId = getSectionIdFromLink(lastLink);
-    }
-
     updateActiveMenu(currentSectionId);
+}
+
+function getMenuSections() {
+    return Array.from(navLinks)
+        .map(function(link) {
+            const sectionId = getSectionIdFromLink(link);
+            return document.getElementById(sectionId);
+        })
+        .filter(function(section) {
+            return section !== null;
+        });
 }
 
 function updateActiveMenu(sectionId) {
