@@ -8,11 +8,53 @@ const formMessage = document.querySelector("#formMessage");
 const header = document.querySelector(".site-header");
 const navLinks = document.querySelectorAll(".site-header nav a[href^='#']");
 
+const ctaHero = document.querySelector("#cta-hero");
+const ctaSolution = document.querySelector("#cta-solution");
+const ctaPrice = document.querySelector("#cta-price");
+const contattiSection = document.querySelector("#contatti");
 
-/* =========================
-   MENU ATTIVO DURANTE LO SCROLL
-   Versione più stabile: non salta sezioni corte
-========================= */
+
+function trackEvent(eventName, eventData) {
+    if (typeof window.umami !== "undefined" && typeof window.umami.track === "function") {
+        window.umami.track(eventName, eventData);
+    } else if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        console.log("[tracking]", eventName, eventData || "");
+    }
+}
+
+if (ctaHero) {
+    ctaHero.addEventListener("click", function() {
+        trackEvent("cta_hero_click");
+    });
+}
+
+if (ctaSolution) {
+    ctaSolution.addEventListener("click", function() {
+        trackEvent("cta_solution_click");
+    });
+}
+
+if (ctaPrice) {
+    ctaPrice.addEventListener("click", function() {
+        trackEvent("cta_price_click");
+    });
+}
+
+if (contattiSection && "IntersectionObserver" in window) {
+    let formViewTracked = false;
+
+    const formViewObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting && !formViewTracked) {
+                trackEvent("form_view");
+                formViewTracked = true;
+                formViewObserver.disconnect();
+            }
+        });
+    }, { threshold: 0.3 });
+
+    formViewObserver.observe(contattiSection);
+}
 
 let isScrolling = false;
 let isMenuClickScrolling = false;
@@ -183,6 +225,8 @@ if (contactForm) {
         const validationError = validateForm(nome, email, telefono, messaggio);
 
         if (validationError) {
+            trackEvent("form_submit_error", { motivo: "validazione" });
+
             showMessage(validationError.message, "error");
             setInvalid(validationError.input);
 
@@ -225,6 +269,8 @@ if (contactForm) {
                 throw new Error("Errore durante l'invio del form.");
             }
 
+            trackEvent("form_submit_success");
+
             showMessage("Richiesta inviata correttamente! Ti ricontatterò presto.", "success");
 
             contactForm.reset();
@@ -234,6 +280,7 @@ if (contactForm) {
             }, 1200);
 
         } catch (error) {
+            trackEvent("form_submit_error", { motivo: "invio" });
             showMessage("C'è stato un problema durante l'invio. Riprova tra poco.", "error");
         } finally {
             if (submitButton) {
