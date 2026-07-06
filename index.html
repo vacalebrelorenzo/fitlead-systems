@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="style.css">
 
     <script defer src="https://cloud.umami.is/script.js" data-website-id="6861fb87-d885-48c2-906e-52045882deaf"></script>
+
+    <link rel="preload" as="image" href="images/mockup-landing.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -35,7 +40,7 @@
             <a href="#prezzo">Prezzo</a>
             <a href="#chi-sono">Chi sono</a>
             <a href="#faq">FAQ</a>
-            <a href="#contatti" class="btn-secondary">Contatti</a>
+            <a href="#contatti" class="btn-secondary" aria-label="Vai alla sezione contatti">Contatti</a>
         </nav>
         
     </header>
@@ -43,7 +48,7 @@
     <main>
 
         <!-- HERO SECTION -->
-        <section id="hero" class="hero">
+        <section id="hero" class="hero reveal">
             <div class="hero-text">
                 <p class="eyebrow">PER PALESTRE, PERSONAL TRAINER E STUDI FITNESS</p>
 
@@ -73,7 +78,7 @@
 
 
         <!-- PROBLEMA SECTION -->
-        <section id="problema" class="problem-section">
+        <section id="problema" class="problem-section reveal">
             <div class="section-header">
                 <p class="eyebrow-dark">IL PROBLEMA</p>
 
@@ -114,7 +119,7 @@
             </div>
         </section>
 <!-- ESEMPIO PRATICO SECTION -->
-        <section id="esempio-pratico" class="example-section">
+        <section id="esempio-pratico" class="example-section reveal">
             <div class="example-content">
                 <div class="section-header">
                     <p class="eyebrow-dark">ESEMPIO PRATICO</p>
@@ -150,7 +155,7 @@
         </section>
 
 <!-- SOLUZIONE SECTION -->
-        <section id="soluzione" class="solution-section">
+        <section id="soluzione" class="solution-section reveal">
             <div class="solution-content">
 
                 <div class="solution-text">
@@ -204,7 +209,7 @@
 
 
         <!-- PER CHI È PENSATO SECTION -->
-        <section id="per-chi" class="why-section">
+        <section id="per-chi" class="why-section reveal">
             <div class="section-header">
                 <p class="eyebrow-dark">PER CHI È PENSATO</p>
 
@@ -242,7 +247,7 @@
 
 
         <!-- COME FUNZIONA SECTION -->
-        <section id="come-funziona" class="why-section">
+        <section id="come-funziona" class="why-section reveal">
             <div class="section-header">
                 <p class="eyebrow-dark">COME FUNZIONA</p>
 
@@ -279,7 +284,7 @@
 
 
         <!-- PACCHETTO SECTION -->
-        <section id="pacchetto" class="package-section">
+        <section id="pacchetto" class="package-section reveal">
             <div class="package-content">
                 <div class="package-text">
                     <p class="eyebrow">COSA INCLUDE</p>
@@ -334,7 +339,7 @@
 
 
         <!-- PREZZO SECTION -->
-        <section id="prezzo" class="pricing-section">
+        <section id="prezzo" class="pricing-section reveal">
             <div class="pricing-card">
                 <p class="eyebrow">PREZZO LANCIO</p>
 
@@ -389,7 +394,7 @@
 
 
         <!-- CHI SONO SECTION -->
-        <section id="chi-sono" class="about-section">
+        <section id="chi-sono" class="about-section reveal">
             <div class="about-content">
                 <div class="about-text">
                     <p class="eyebrow">CHI C'È DIETRO</p>
@@ -416,7 +421,7 @@
 
 
         <!-- FAQ SECTION -->
-        <section id="faq" class="why-section">
+        <section id="faq" class="why-section reveal">
             <div class="section-header">
                 <p class="eyebrow-dark">DOMANDE FREQUENTI</p>
 
@@ -487,7 +492,7 @@
 
 
         <!-- CONTATTI SECTION -->
-        <section id="contatti">
+        <section id="contatti" class="reveal">
             <h2>Vuoi capire se stai perdendo richieste online?</h2>
 
             <p>
@@ -514,7 +519,7 @@
                 </p>
 
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" placeholder="Il tuo nome" autocomplete="name">
+                <input type="text" id="nome" name="nome" placeholder="Il tuo nome" autocomplete="name" required>
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="La tua email" autocomplete="email">

@@ -15,11 +15,13 @@ const contattiSection = document.querySelector("#contatti");
 
 
 function trackEvent(eventName, eventData) {
-    if (typeof window.umami !== "undefined" && typeof window.umami.track === "function") {
-        window.umami.track(eventName, eventData);
-    } else if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-        console.log("[tracking]", eventName, eventData || "");
-    }
+    try {
+        if (window.umami?.track) {
+            window.umami.track(eventName, eventData);
+        } else if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            console.log("[tracking]", eventName, eventData || "");
+        }
+    } catch (e) {}
 }
 
 if (ctaHero) {
@@ -98,8 +100,7 @@ function updateActiveMenuOnScroll() {
         const sectionTop = rect.top;
         const sectionBottom = rect.bottom;
 
-        const activationLineIsInsideSection =
-            sectionTop <= activationLine && sectionBottom >= activationLine;
+        const activationLineIsInsideSection = sectionTop <= activationLine && sectionBottom >= activationLine;
 
         if (activationLineIsInsideSection) {
             currentSectionId = section.id;
@@ -210,6 +211,8 @@ if (contactForm) {
 
     contactForm.addEventListener("submit", async function(event) {
         event.preventDefault();
+
+        trackEvent("form_submit_click");
 
         const submitButton = contactForm.querySelector("button[type='submit']");
         const originalButtonText = submitButton ? submitButton.textContent : "";
@@ -489,5 +492,62 @@ function clearInputStates() {
 
     inputs.forEach(function(input) {
         resetInputState(input);
+    });
+}
+
+let mouseX = 50;
+let mouseY = 50;
+let ticking = false;
+
+document.addEventListener("mousemove", (e) => {
+    mouseX = (e.clientX / window.innerWidth) * 100;
+    mouseY = (e.clientY / window.innerHeight) * 100;
+
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            document.documentElement.style.setProperty("--mx", mouseX + "%");
+            document.documentElement.style.setProperty("--my", mouseY + "%");
+            ticking = false;
+        });
+
+        ticking = true;
+    }
+});
+
+const revealElements = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+} else {
+    // fallback: tutto visibile
+    revealElements.forEach(el => el.classList.add("visible"));
+}
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+if (prefersReducedMotion.matches) {
+    document.documentElement.style.setProperty("--mx", "50%");
+    document.documentElement.style.setProperty("--my", "50%");
+}
+
+
+if (ctaHero && contattiSection) {
+    ctaHero.addEventListener("click", () => {
+        contattiSection.scrollIntoView({ behavior: "smooth" });
+
+        setTimeout(() => {
+            nomeInput?.focus();
+        }, 700);
     });
 }
